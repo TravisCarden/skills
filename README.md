@@ -7,6 +7,7 @@ My personal collection of AI agent skills, shared publicly in case others find t
 | Skill | Description |
 |-------|-------------|
 | [`build-vs-buy`](skills/build-vs-buy/SKILL.md) | Manually invoked review for a significant decision: reuse existing code, use a platform capability, adopt a dependency or service, build custom code, or a mix. |
+| [`docs-optimizer`](skills/docs-optimizer/SKILL.md) | Manually invoked review and cleanup of repository instructions for AI agents. Fixes stale facts and conflicts, removes unnecessary context, and preserves required behavior. |
 
 ## My Recommendations
 
