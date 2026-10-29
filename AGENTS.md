@@ -56,7 +56,7 @@ Findings worth reusing:
 
 ## Examples files
 
-Write `examples.md` only from the final `SKILL.md`, using a fresh run per request. Do not reuse outputs from older versions.
+Write `examples.md` only from the final `SKILL.md`, using a fresh run per request. Do not reuse outputs from older versions. Any change to a `SKILL.md` body makes its `examples.md` stale: rerun the same requests and replace every response in the same change.
 
 - **Content:** responses stay unedited. Group the cases by the behavior they test, with a one-line italic description per group.
 - **Header:** state the model and date, that the skill ran without tools, that the responses' technical claims are unverified, and that `SKILL.md` does not load the file.
