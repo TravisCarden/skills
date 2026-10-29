@@ -8,7 +8,7 @@ My personal collection of AI agent skills, shared publicly in case others find t
 |-------|-------------|-----------|
 | [`advise-me`](skills/advise-me/SKILL.md) | Manually invoked advisor for any technical or business decision, from "should I try X?" to an architecture or initiative. Checks the premise, looks for ways to make the problem go away, and gives one recommendation. | [Examples](skills/advise-me/examples.md): 13 real responses |
 | [`build-vs-buy`](skills/build-vs-buy/SKILL.md) | Manually invoked review for a significant decision: reuse existing code, use a platform capability, adopt a dependency or service, build custom code, or a mix. | [Examples](skills/build-vs-buy/examples.md): 12 real responses |
-| [`docs-optimizer`](skills/docs-optimizer/SKILL.md) | Manually invoked review and cleanup of repository instructions for AI agents. Fixes stale facts and conflicts, removes unnecessary context, and preserves required behavior. | |
+| [`docs-optimizer`](skills/docs-optimizer/SKILL.md) | Manually invoked review and cleanup of repository instructions for AI agents. Fixes stale facts and conflicts, removes unnecessary context, and preserves required behavior. | [Examples](skills/docs-optimizer/examples.md): 10 real responses |
 
 ## My Recommendations
 

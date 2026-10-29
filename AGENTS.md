@@ -64,6 +64,7 @@ Write `examples.md` only from the final `SKILL.md`, using a fresh run per reques
 - **Separators:** a `---` rule before each section and between examples.
 - **Request:** a plain line, ``**Request:** `/<name>` <request>``.
 - **Response:** in a blockquote. Change headings inside responses to `####` so they don't break the document's outline. Before doing that, check that no code block has a `#` line at column 0, which a blanket heading rewrite would alter.
+- **README:** link the file in the skill's Resources cell in `README.md`, with the number of responses.
 
 ## Commits
 
