@@ -28,7 +28,6 @@ My personal collection of AI agent skills, shared publicly in case others find t
 
 | Skill | Description |
 |-------|-------------|
-| [`simple-english`](https://www.skills.sh/aminblg/simpleenglish/simple-english) | "Write or rewrite text in plain, layman-readable English in the spirit of ASD-STE100 Simplified Technical English." |
 | [`ponytail`](https://ponytail.dev/) | "A ruleset that makes your AI coding agent write the least code that works — like a senior dev who's been paged at 3am one too many times." |
 | [`skill-creator`](https://www.skills.sh/anthropics/skills/skill-creator) | "Create, test, and iteratively improve AI agent skills with structured evaluation and benchmarking." |
 
@@ -38,5 +37,6 @@ I specifically do *not* use these:
 
 | Skill | Description |
 |-------|-------------|
-| [`caveman`](https://github.com/juliusbrussee/caveman) | `caveman` is extremely popular, but [it's claims are disputable](https://blog.jetbrains.com/ai/2026/07/speak-to-ai-agents-like-cavemen-tosave-tokens/) and I haven't personally seen much benefit--certainly not enough to justify its surprising complexity. If you just want more concise, readable prose, I find [`simple-english`](https://www.skills.sh/aminblg/simpleenglish/simple-english) works better. |
+| [`caveman`](https://github.com/juliusbrussee/caveman) | `caveman` is extremely popular, but [it's claims are disputable](https://blog.jetbrains.com/ai/2026/07/speak-to-ai-agents-like-cavemen-tosave-tokens/) and I haven't personally seen much benefit--certainly not enough to justify its surprising complexity. Someone [benchmarked the whole thing](https://www.maxtaylor.me/articles/i-benchmarked-caveman-against-two-words) against the two words "be brief". |
+| [`simple-english`](https://www.skills.sh/aminblg/simpleenglish/simple-english) | `simple-english` is a good idea, but it's also very heavy and highly opinionated. If all you want is shorter, more precise prose, check out the project's condensed [standalone system prompt](https://github.com/AminBlg/SimpleEnglish/blob/main/prompts/system-prompt.md). There's a [~60 word-budget version](https://github.com/AminBlg/SimpleEnglish/blob/main/prompts/system-prompt.md#word-budget-version-60-tokens) at the end for tight system prompts. |
 | [`superpowers`](https://www.skills.sh/obra/superpowers) | I prefer Matt Pococks skills, but it's really just a matter of preference, and if you're not already committed to an alternative, `superpowers` may work well for you. |
