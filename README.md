@@ -23,6 +23,7 @@ My personal collection of AI agent skills, shared publicly in case others find t
 | [`code-review`](https://www.aihero.dev/skills-code-review) | "Two-axis review of the diff between HEAD and a fixed point the user supplies:" |
 | [`research`](https://www.aihero.dev/skills-research) | "Spin up a background agent to do the research, so you keep working while it reads." |
 | [`improve-codebase-architecture`](https://www.aihero.dev/skills-improve-codebase-architecture) | "Analyze codebases for architectural friction and propose module-deepening refactors as testability improvements." |
+| [`retro`](https://www.aihero.dev/skills-retro) | Look back on a session and suggest repo improvements. |
 
 ### Others
 
