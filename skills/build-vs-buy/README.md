@@ -22,6 +22,18 @@ Expect a recommendation that separates what the project owns from what it delega
 
 A recommendation does not authorize adding dependencies, adopting services, or changing scope. The optional `research` skill is not required; the agent can research directly.
 
+## Compared with ponytail
+
+[Ponytail](https://github.com/DietrichGebert/ponytail) is an agent skill that discourages overbuilding throughout a coding session. It favors reuse and the smallest complete change. Its plugin adds automatic instruction loading, modes, review/audit commands, and usage tracking; its rules can also be used alone.
+
+`build-vs-buy` shares the reuse-first bias but reviews a specific decision: what should the project own over the requirement's lifetime? It compares adoption and maintenance risks, not just implementation size, and can recommend a new dependency, service, custom code, or a mix.
+
+### Should I use both?
+
+Only if you need both kinds of help. Ponytail can add ongoing restraint if your agent overbuilds. If your existing instructions and practices already prevent that, it may add little value. `build-vs-buy` adds a targeted review of consequential ownership or adoption choices; it does not need ponytail.
+
+If you use both, let the explicit decision review choose the approach, then apply ponytail's implementation restraint within it. Their priorities can differ: the shortest diff need not have the lowest lifetime cost.
+
 ## Read more
 
 - [Skill instructions](SKILL.md)
