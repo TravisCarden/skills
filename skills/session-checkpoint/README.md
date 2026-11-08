@@ -4,7 +4,7 @@ Decide whether the remaining work warrants a different session, model, or effort
 
 ## When to use it
 
-Use this before continuing a substantial task when you want to reassess context quality, model capability, or total cost. Session length alone is not a reason to reset. A brief easier step is not a reason to downgrade and immediately switch back.
+Use this when you want to reassess context quality, model capability, or total cost, including when moving to a new task in the same subsystem. The model can also invoke it before work that needs a material decision or at task completion when transition advice is useful. Session length alone is not a reason to reset. A brief easier step is not a reason to downgrade and immediately switch back.
 
 ## Use
 
@@ -14,7 +14,9 @@ Invoke the skill manually with the remaining task and any known settings or cons
 /session-checkpoint Context is accurate. The design is settled, and a large batch of specified mechanical edits and verification remains. Is a model or effort change worth it? Assess only.
 ```
 
-Without an assessment-only request, the agent continues work you have already authorized unless your decision would materially affect cost or outcome. A worthwhile net saving, risky work that needs stronger judgment, or a needed session transition can justify a pause. Internal checks stay silent when no decision is needed.
+Without an assessment-only request, the agent continues work you have already authorized unless your decision would materially affect cost or outcome. A worthwhile net saving, risky work that needs stronger judgment, or a needed session transition can justify a pause. Completing a phase does not justify stopping while requested work remains.
+
+At task completion, the agent appends a checkpoint to its normal final response only when a known next task or a concrete context problem warrants a material recommendation. Otherwise it finishes without checkpoint boilerplate or asking what to do next. Internal checks stay silent while work continues unless a decision is needed.
 
 ## What it decides
 
@@ -48,6 +50,6 @@ The mapping is a recommendation guide, not model detection, an availability chec
 
 - [Skill instructions](SKILL.md)
 - [Default model mapping](model-mapping.md)
-- [20 real example responses](examples.md), including cache costs, material savings, risky work, custom vendors, and partial overrides
+- [25 real example responses](examples.md), including completion-time advice, silent internal checks, same-subsystem task changes, cache costs, and model mapping overrides
 
 The examples ran without tools. They demonstrate decision and output behavior, not measured savings or live-session performance.

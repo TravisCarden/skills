@@ -1,7 +1,6 @@
 ---
 name: session-checkpoint
-description: "Manually invoked checkpoint: assess whether to continue, compact, or start fresh, whether a handoff is needed, and which model tier and effort fit the remaining work."
-disable-model-invocation: true
+description: "Assess whether to continue, compact, or start fresh, whether a handoff is needed, and which model tier and effort fit the next work. Use for explicit session-transition questions, at task completion when a known next task or context problem warrants transition advice, or before work that needs a material session or model decision."
 user-invocable: true
 ---
 
@@ -11,9 +10,11 @@ Assess whether the remaining work needs a session, model, or effort change. Base
 
 ## Continue or pause
 
-Continue authorized work in the same turn unless a user decision would materially affect total cost or the reliability of the outcome. Pause before the affected work for a worthwhile cost reduction, an important capability or effort change, or a needed session transition. Explain the concrete benefit or risk; marginal optimizations do not justify an interruption.
+Continue authorized work in the same turn unless a user decision would materially affect total cost or the reliability of the outcome. Pause before the affected work for a worthwhile cost reduction, an important capability or effort change, or a needed session transition. Explain the concrete benefit or risk; marginal optimizations do not justify an interruption. Completing a phase is not completing the user's request.
 
-An explicit assessment-only request ends with the assessment. Do not start work the user has not authorized. If these rules are used for an internal check, stay silent and keep working unless a user decision is needed; do not turn each phase boundary into an announced checkpoint.
+An explicit assessment-only request ends with the assessment. Do not start work the user has not authorized. Internal checks stay silent while work continues unless a user decision is needed.
+
+After completing the requested work, append a checkpoint to the normal final response only when a known next task or a concrete context problem warrants a material recommendation. Otherwise finish without checkpoint boilerplate or asking for another task. The checkpoint follows a justified stop; it does not create one.
 
 The user performs transitions. Do not change settings, compact, open a session, or write a handoff on the user's behalf.
 
@@ -43,7 +44,7 @@ Only when neither source supplies a mapping, read [model-mapping.md](model-mappi
 
 Name the mapped model in a change recommendation, not just its tier. If a material change needs a tier with no applicable model, state the needed capability and ask which available model to use instead of guessing or directing the user to an ambiguous category. An unresolved mapping alone does not justify interrupting adequate ongoing work.
 
-Compare total cost over the remaining work: retries, rework, switching, context rebuilding, lost prompt-cache savings when changing models or vendors, and likely later upgrades. Preserving the conversation does not preserve its cache across models. Keep an adequate current setup unless concrete evidence supports a material net benefit; an easier next step or a lower generation rate alone is not enough. Without that evidence, keep working rather than interrupting to price a switch. Lowering effort for a file read before raising it for analysis is not a useful saving. A model or effort change alone does not require a fresh session. Do not research catalogs or invent availability, cache measurements, context measurements, or savings.
+Compare total cost over the remaining work: retries, rework, switching, context rebuilding, lost prompt-cache savings when changing models or vendors, and likely later upgrades. Preserving the conversation does not preserve its cache across models. Keep an adequate current setup unless concrete evidence supports a material net benefit. An easier next step, a lower generation rate, or switching in place without rebuilding context does not by itself establish a material net saving. Without that evidence, keep working rather than interrupting to price a switch. Lowering effort for a file read before raising it for analysis is not a useful saving. A model or effort change alone does not require a fresh session. Do not research catalogs or invent availability, cache measurements, context measurements, or savings.
 
 ## Transition state
 
@@ -55,14 +56,14 @@ The user decides how to create a handoff. Never create one or imply it exists. M
 
 For an explicit checkpoint with no material decision, give one short line saying to continue with the current model and effort. Use "keep current" for unknown settings; mark "(no change)" only when both settings are known. Then continue authorized work, unless the user asked for assessment only.
 
-For a material decision, use short bold-labeled bullets in this order, addressed to the user. No preamble, table, or closing paragraph.
+For a material decision, use short bold-labeled bullets in this order, addressed to the user. For an internal check at task completion, append them after the normal final response; otherwise give the checkpoint directly. The checkpoint itself needs no preamble, table, or closing paragraph.
 
 - **Session:** continue, compact, or start fresh
 - **Handoff:** no or recommended
 - **Model / effort:** concrete mapped model / effort, or selection needed with the target tier if unresolved; mark "(no change)" only if both match the known current settings
-- **Reason:** one short sentence with the concrete benefit or risk that warrants the pause
+- **Reason:** one short sentence with the concrete benefit or risk that warrants the recommendation
 - **Do next:** direct actions for the user, including prerequisites. Keep a single action inline. Put distinct actions on separate numbered lines, including changing settings and resuming, compacting and resuming, or creating a handoff and opening a session. For a handoff, identify only the state missing from existing records.
 
-If the next task is unknown, keep current settings and ask only for the missing task. Do not force a transition report or invent a reason for a change.
+If the next task is unknown, keep current settings. For an explicit checkpoint, ask only for the missing task rather than forcing a transition report. For an internal check, omit the checkpoint unless a concrete context problem warrants a transition recommendation; do not invent the next task.
 
 For start fresh, add **Starter prompt** in a fenced `text` block: one short paragraph with the goal, the records to read, and the exact next action. If a handoff is recommended, tell the user to create it first, and have the prompt refer to "the handoff I supply," not an invented path. The prompt must paste unchanged and must not imply that unverified work passed.

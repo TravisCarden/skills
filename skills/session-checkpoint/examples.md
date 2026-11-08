@@ -2,7 +2,7 @@
 
 Real, unedited responses from the final [`session-checkpoint`](SKILL.md) skill, generated on 2026-11-08. Each request used a fresh, stateless call with the skill body and bundled [default model mapping](model-mapping.md) as system context and no tools. The harness selected its default model; the concrete model ID was not exposed.
 
-The scenarios are hypothetical. Technical claims in the responses are unverified. These examples show decisions and output behavior, not measured cost savings, live tool execution, or proof of better reasoning. Custom deployment aliases in the override cases are hypothetical user-supplied names, not claims about public models. Internal-check scenarios supply their complete tasks in the requests.
+The scenarios are hypothetical. Technical claims in the responses are unverified. These examples show decisions and output behavior, not measured cost savings, live tool execution, or proof of better reasoning. Custom deployment aliases in the override cases are hypothetical user-supplied names, not claims about public models. Internal-check scenarios supply their complete tasks in the requests. Requests without a slash command simulate model invocation after the skill has loaded; they do not test automatic discovery.
 
 This file is for people. `SKILL.md` does not reference it, so agents do not load it.
 
@@ -28,6 +28,11 @@ This file is for people. `SKILL.md` does not reference it, so agents do not load
 - [Do not fill omitted tiers from defaults](#do-not-fill-omitted-tiers-from-defaults)
 - [Do not interrupt for an irrelevant mapping gap](#do-not-interrupt-for-an-irrelevant-mapping-gap)
 - [Prefer the user mapping over runtime defaults](#prefer-the-user-mapping-over-runtime-defaults)
+- [Keep subsystem context for a new task](#keep-subsystem-context-for-a-new-task)
+- [Append advice after completing the request](#append-advice-after-completing-the-request)
+- [Finish without an automatic checkpoint](#finish-without-an-automatic-checkpoint)
+- [Continue beyond an internal phase boundary](#continue-beyond-an-internal-phase-boundary)
+- [Recommend a reset without inventing the next task](#recommend-a-reset-without-inventing-the-next-task)
 
 ---
 
@@ -39,7 +44,7 @@ _Agrees with a sound plan without adding transition overhead._
 
 **Response:**
 
-> Continue with Terra at medium effort (no change). Next: run `npm test` for the web app.
+> Continue with Terra at medium effort (no change).
 
 ---
 
@@ -54,8 +59,10 @@ _Preserves reliable state when the harness reports context pressure._
 > - **Session:** compact
 > - **Handoff:** no
 > - **Model / effort:** Sonnet / medium (no change)
-> - **Reason:** Context is nearly exhausted, but consistent reasoning makes a concise summary sufficient to preserve reliable progress.
-> - **Do next:** Compact, preserving the exact failing build command, configuration changes, and pending verification; then resume the same Vite build debugging task.
+> - **Reason:** Context is constrained, but consistent reasoning makes a concise summary sufficient to preserve reliable progress.
+> - **Do next:**
+>   1. Compact, preserving the exact failing build command and error, config changes and their rationale, and pending verification.
+>   2. Resume the same Vite debugging task, starting with the pending verification; keep unverified changes explicitly marked.
 
 ---
 
@@ -70,12 +77,12 @@ _Preserves unfinished changes and a failing reproduction in a paste-ready prompt
 > - **Session:** start fresh
 > - **Handoff:** no
 > - **Model / effort:** keep current / keep current
-> - **Reason:** Repeated obsolete React Router assumptions despite corrections make continued reasoning less reliable; the existing investigation document can carry the essential state.
-> - **Do next:** Open a fresh session and paste the starter prompt below.
+> - **Reason:** Repeated obsolete API assumptions despite corrections make continuation less reliable; the existing investigation record and a short prompt preserve the essential state.
+> - **Do next:** Open a fresh session with the prompt below.
 >
 > **Starter prompt**
 > ```text
-> Investigate why /settings still redirects to /login after a successful sign-in. Read the repository instructions and docs/routing-investigation.md for the goal, decisions, and reproduction command. src/routes.tsx contains an unverified edit, and the latest reproduction still fails. Trace the route guards before editing, checking API assumptions against the installed React Router version. There are no other known blockers.
+> Investigate why /settings still redirects to /login after a successful sign-in. Read docs/routing-investigation.md for the goal, decisions, and reproduction command, and follow repository instructions. src/routes.tsx contains an unverified edit; the latest reproduction still fails, and there is no other blocker. Prior attempts repeatedly relied on obsolete React Router APIs despite corrections, so establish the installed version and use its actual APIs. Next, trace the route guards before making any further edits.
 > ```
 
 ---
@@ -88,7 +95,7 @@ _Asks for the next task instead of guessing whether a downgrade is worthwhile._
 
 **Response:**
 
-> Keep Sol at medium effort. What’s the next task?
+> Continue with Sol at medium effort (no change). What is the next task?
 
 ---
 
@@ -100,7 +107,7 @@ _Keeps the recommendation when no facts change._
 
 **Response:**
 
-> Continue with Haiku at low effort (no change). Session length alone does not justify starting fresh; the accurate context still helps with the mechanical CSS class rename.
+> Continue with Haiku at low effort (no change). Session length alone does not justify starting fresh; the context remains accurate and useful for the mechanical CSS class rename.
 
 ---
 
@@ -114,15 +121,15 @@ _Recommends a handoff without writing it or inventing its location._
 
 > - **Session:** start fresh
 > - **Handoff:** recommended
-> - **Model / effort:** keep current / keep current
-> - **Reason:** Recurring corrected assumptions make continuation unreliable, and a handoff is needed to preserve evidence that exists only in this conversation.
+> - **Model / effort:** OpenAI Sol / high
+> - **Reason:** Recurring corrected assumptions make continuation unreliable, and a handoff is needed to preserve the investigation state that exists only in this conversation.
 > - **Do next:**
->   1. Use your own command to create a handoff capturing the reproduction, corrected assumptions, rejected hypotheses and supporting evidence, and unverified changes. Record tracing invalidation event order as the next action.
->   2. Open a fresh session and supply that handoff with the starter prompt below.
+>   1. Use your own command to create a handoff capturing the reproduction, rejected hypotheses and corrected assumptions, unverified changes, and any verification results or blockers. Mark unverified work explicitly.
+>   2. Open a fresh session using OpenAI Sol with high effort, supply your handoff, and paste the starter prompt below.
 >
 > **Starter prompt**
 > ```text
-> Investigate the difficult intermittent cache invalidation bug. Read the handoff I supply for the reproduction, corrected assumptions, rejected hypotheses, and unverified changes. First trace the invalidation event order before editing; distinguish observed evidence from hypotheses, and do not treat unverified changes as validated.
+> Investigate the difficult intermittent cache invalidation bug. Read the handoff I supply and the applicable repository instructions first. Preserve the corrected assumptions and rejected hypotheses, and treat unverified changes as unverified. Next, trace the invalidation event order before editing; use the trace to identify where the observed sequence diverges from the expected sequence.
 > ```
 
 ---
@@ -135,7 +142,7 @@ _Considers switching costs rather than downgrading for a small mechanical task._
 
 **Response:**
 
-> Continue with Astra / high (no change); the two-file rename and test run are too small to establish a material net benefit from switching.
+> Continue with Astra / high (no change). The remaining task is small and context is accurate; switching offers no established material net saving.
 
 ---
 
@@ -150,8 +157,8 @@ _Pauses for an effort decision that affects the quality of the remaining analysi
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** Sol / high
-> - **Reason:** Sol is suitable, but tracing interleavings across three async functions warrants higher effort to avoid missing ordering constraints before editing; the accurate context should be preserved.
-> - **Do next:** Change effort to high in this session, then request the interleaving trace before any edits.
+> - **Reason:** Sol is suitable, but carefully tracing interleavings across three async functions warrants higher effort to avoid missing ordering constraints; the existing context remains useful.
+> - **Do next:** Raise effort to high in place, then trace the event interleavings before editing.
 
 ---
 
@@ -163,7 +170,7 @@ _Asks for the missing task without inventing current settings._
 
 **Response:**
 
-> Keep current model and effort settings. What task would you like to work on next?
+> Continue with the current model and effort—keep current settings. What task would you like to work on next?
 
 ---
 
@@ -178,10 +185,10 @@ _Pauses before consequential work while preserving useful session context._
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** Opus / high
-> - **Reason:** Tenant-isolation and rollback risks warrant stronger architectural judgment; keeping the reliable context avoids rebuilding it.
+> - **Reason:** Multi-tenant migration design involves consequential rollback and data-isolation tradeoffs that warrant stronger reasoning than Haiku / low; the reliable context can be retained.
 > - **Do next:**
 >   1. Switch to Opus with high effort in this session.
->   2. Resume the migration-strategy decision using the current schema and security constraints.
+>   2. Resume assessing migration strategies against the current schema, security constraints, rollback requirements, and tenant-isolation risks.
 
 ---
 
@@ -193,7 +200,7 @@ _Keeps the current setup across a file read followed by analysis._
 
 **Response:**
 
-> Continue with Opus / high (no change); lowering effort for a short read before difficult event-order analysis offers no worthwhile total-cost benefit.
+> Continue with Opus / high (no change). Lowering effort for one short read before difficult event-order analysis offers no material benefit.
 
 ---
 
@@ -205,7 +212,7 @@ _Rejects a nominally cheaper model when losing the warm cache makes the switch c
 
 **Response:**
 
-> Continue with Sol / medium (no change); the cache-refill cost exceeds the remaining generation savings.
+> Continue with Sol / medium (no change); switching to Terra would cost more in cache refill alone than the remaining generation savings.
 
 ---
 
@@ -220,8 +227,10 @@ _Treats a material net cost reduction as a reason to ask the user before continu
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** Luna / low
-> - **Reason:** The remaining edits are mechanical, and your total-cost estimate shows substantial savings from switching without sacrificing reliability.
-> - **Do next:** Switch to Luna / low, then resume the authorized edits and their specified verification in this session.
+> - **Reason:** Your total-cost estimate establishes substantial savings for the remaining mechanical edits and verification, with no need to rebuild the session.
+> - **Do next:**
+>   1. Switch to Luna / low in this session.
+>   2. Resume the authorized edits and their specified verification using the documented architecture.
 
 ---
 
@@ -236,10 +245,10 @@ _Uses the mapping for an alternative without treating it as proof of identity or
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** OpenAI Sol / high
-> - **Reason:** Anthropic’s exhausted quota prevents continuation there; Sol is mapped to Strong for difficult diagnosis, and the reliable context warrants staying in this session despite the cache loss.
+> - **Reason:** Anthropic’s exhausted quota prevents continuation on Opus; Sol fits the difficult diagnosis, and the reliable existing context warrants continuing in place despite losing the prompt cache.
 > - **Do next:**
 >   1. Switch in place to OpenAI Sol with high effort.
->   2. Resume the diagnosis from the existing investigation record, retaining its constraints and distinguishing verified findings from open hypotheses.
+>   2. Resume the diagnosis from the existing conversation and investigation record.
 
 ---
 
@@ -253,9 +262,9 @@ _Asks for an exact available model rather than directing the user to an ambiguou
 
 > - **Session:** continue
 > - **Handoff:** no
-> - **Model / effort:** selection needed—Strong-tier capability / high effort; current settings unknown.
-> - **Reason:** Tenant-isolation and rollback failures could cause data loss or cross-tenant exposure, so model suitability matters before deciding the migration.
-> - **Do next:** Which model from your available vendor should we use for this high-risk analysis? Supply its name or your tier mapping; the existing context can stay.
+> - **Model / effort:** selection needed for Strong capability / high effort; current model, vendor, and effort are unknown
+> - **Reason:** The migration requires safety-critical judgment about rollback and tenant isolation; reliable existing context should be retained.
+> - **Do next:** Tell me which models your vendor offers, or which available model you map to Strong, so I can recommend a concrete model without guessing.
 
 ---
 
@@ -267,7 +276,7 @@ _Continues authorized work without emitting another checkpoint or asking for app
 
 **Response:**
 
-> R7: urgent
+> R7: urgent.
 
 ---
 
@@ -282,10 +291,10 @@ _Uses exact user-supplied deployment aliases rather than the bundled vendors._
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** Kimi / review-deployment at high effort
-> - **Reason:** The risky migration requires difficult judgment about rollback and tenant isolation; the current Light deployment at low effort is not adequate, while the accurate context remains useful.
+> - **Reason:** The migration requires safety-critical judgment about rollback and tenant isolation; the current SpaceX / batch-deployment at low effort is not an adequate fit, while the accurate context remains useful.
 > - **Do next:**
->   1. Switch to Kimi / review-deployment and set effort to high.
->   2. Resume in this session to evaluate the migration, rollback strategy, and tenant-isolation constraints.
+>   1. Switch to Kimi / review-deployment at high effort in this session.
+>   2. Then begin the migration decision, including rollback viability and tenant-isolation failure modes.
 
 ---
 
@@ -300,8 +309,8 @@ _Asks for an exact model when a partial override leaves the required tier unmapp
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** selection needed for Light tier / low effort
-> - **Reason:** Your estimate establishes substantial net savings for the mechanical batch, but your mapping provides no Light-tier model.
-> - **Do next:** Identify an available Light-tier model and vendor before switching; retain the current settings until then.
+> - **Reason:** Your estimate establishes substantial net savings for the mechanical batch, but your mapping supplies no Light-tier model.
+> - **Do next:** Which available model and vendor should you use for the Light-tier work?
 
 ---
 
@@ -313,7 +322,7 @@ _Completes authorized work without requesting mappings that do not affect it._
 
 **Response:**
 
-> R8: routine
+> R8: routine.
 
 ---
 
@@ -328,7 +337,95 @@ _Resolves a recommendation from the user override rather than the runtime mappin
 > - **Session:** continue
 > - **Handoff:** no
 > - **Model / effort:** Meta / reasoning-deployment / high
-> - **Reason:** Your override replaces the runtime mapping; the migration’s security-sensitive isolation and rollback decisions warrant Strong-tier analysis, while the reliable context supports continuing this session.
+> - **Reason:** Your override replaces the runtime mapping; Strong-tier analysis is needed to assess the migration’s security, rollback, and tenant-isolation risks reliably.
+> - **Do next:** Switch to Meta / reasoning-deployment at high effort, then resume the migration decision in this session.
+
+---
+
+## Keep subsystem context for a new task
+
+_Treats a change from debugging to feature work as a context decision, not an automatic reset._
+
+**Request:** `/session-checkpoint` I finished fixing an invoicing bug. Now I want to add invoice filtering in the same subsystem. The loaded schema, constraints, and test setup are current and useful; no recurring corrected assumptions or context pressure. Current model is Sonnet / medium, and it is adequate for the feature. Should I start a new session? Assess only.
+
+**Response:**
+
+> Continue in the same session with Sonnet / medium (no change); the current context is useful, with no reliability or context-pressure reason to reset.
+
+---
+
+## Append advice after completing the request
+
+_Keeps the normal final report first and adds a useful transition recommendation afterward._
+
+**Request:** This is an internal checkpoint at completion, not a manual checkpoint request. The user asked only for a routing investigation, which is now complete. Report these observed results: /settings redirects to /login because the route guard reads the obsolete session flag; no files changed; the supplied reproduction still fails. The next task, already identified by the user but not authorized yet, is implementing the fix. We repeatedly returned to obsolete API assumptions despite corrections, so a fresh session would reduce that risk. docs/routing-investigation.md contains the goal, evidence, rejected assumptions, reproduction, and exact next action: update the guard to use the current auth state, then rerun the reproduction. Current model is Opus / high and adequate. Give the normal final report and apply the skill.
+
+**Response:**
+
+> Investigation complete: `/settings` redirects to `/login` because the route guard reads the obsolete session flag.
+>
+> - No files changed.
+> - The supplied reproduction still fails.
+> - Findings and the exact next action are recorded in `docs/routing-investigation.md`. Implementing the fix remains unauthorized.
+>
+> - **Session:** start fresh
+> - **Handoff:** no
+> - **Model / effort:** Opus / high (no change)
+> - **Reason:** We repeatedly returned to obsolete API assumptions despite corrections; a fresh session would reduce that risk.
 > - **Do next:**
->   1. Switch to Meta / reasoning-deployment at high effort.
->   2. Continue the migration analysis in this session.
+>   1. Open a fresh session with the same model and effort.
+>   2. When ready to authorize implementation, paste the starter prompt below.
+>
+> **Starter prompt**
+> ```text
+> Implement the routing fix. Read docs/routing-investigation.md for the goal, evidence, rejected assumptions, and reproduction. Update the route guard to use the current auth state instead of the obsolete session flag, then rerun the supplied reproduction and report the result. The investigation changed no files, and the reproduction still failed at its conclusion.
+> ```
+
+---
+
+## Finish without an automatic checkpoint
+
+_Omits checkpoint boilerplate and next-task questions when the requested work is done._
+
+**Request:** This is an internal checkpoint at completion, not a manual checkpoint request. The user requested exactly this calculation: 18 * 24. The calculation is complete: 432. No next task is known. Context is reliable and there is no material model or session issue. Give the final answer.
+
+**Response:**
+
+> 432
+
+---
+
+## Continue beyond an internal phase boundary
+
+_Finishes authorized work instead of treating an intermediate result as a stopping point._
+
+**Request:** This is an internal check, not a manual checkpoint request. The user authorized calculating a subtotal, adding 8% tax, and giving the total. The subtotal phase is finished: 125. Tax and total remain authorized, and you can calculate them now without tools. Context is accurate, current setup is adequate, and there is no material transition benefit. Continue the request to completion.
+
+**Response:**
+
+> Subtotal: $125.00  
+> Tax (8%): $10.00  
+> **Total: $135.00**
+
+---
+
+## Recommend a reset without inventing the next task
+
+_Allows completion-time context advice without asking for or inventing future work._
+
+**Request:** This is an internal checkpoint at completion, not a manual checkpoint request. The user requested only a configuration audit. It is complete: found one obsolete timeout setting, made no changes, and recorded all findings and verification limits in docs/config-audit.md. We repeatedly ignored corrections and reused stale assumptions during the audit, so continuing this conversation would be unreliable. No next task is known. Current model is Opus / high, adequate apart from the context issue. Give the final report and any warranted transition advice. Do not start another task.
+
+**Response:**
+
+> The configuration audit is complete. It found one obsolete timeout setting; no changes were made. All findings and verification limits are recorded in `docs/config-audit.md`.
+>
+> - **Session:** start fresh
+> - **Handoff:** no
+> - **Model / effort:** Opus / high (no change)
+> - **Reason:** Repeatedly ignored corrections and reused stale assumptions make this conversation unreliable for further work.
+> - **Do next:** When you have another task, open a fresh session with the prompt below and add your request.
+>
+> **Starter prompt**
+> ```text
+> The configuration audit is complete, and no configuration changes were made. Read docs/config-audit.md for the findings and verification limits before addressing my next request. Treat the recorded limits as unresolved, not as passed verification. Wait for my task before taking further action.
+> ```
