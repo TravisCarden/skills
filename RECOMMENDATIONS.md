@@ -8,11 +8,11 @@ These are my personal choices, not requirements for using this repository's skil
 
 | Skill | Description |
 |-------|-------------|
-| [`grill-with-docs`](https://www.aihero.dev/skills-grill-with-docs) | "Relentless design interrogation that stress-tests plans against your domain model and sharpens terminology inline." |
-| [`handoff`](https://www.aihero.dev/skills-handoff) | "Summarize conversations into handoff documents for seamless agent-to-agent transitions." |
-| [`code-review`](https://www.aihero.dev/skills-code-review) | "Two-axis review of the diff between HEAD and a fixed point the user supplies:" |
-| [`research`](https://www.aihero.dev/skills-research) | "Spin up a background agent to do the research, so you keep working while it reads." |
-| [`improve-codebase-architecture`](https://www.aihero.dev/skills-improve-codebase-architecture) | "Analyze codebases for architectural friction and propose module-deepening refactors as testability improvements." |
+| [`grill-with-docs`](https://www.aihero.dev/skills-grill-with-docs) | Get interviewed about a plan, and record the decisions. |
+| [`handoff`](https://www.aihero.dev/skills-handoff) | Write up a long session so another agent can continue it. |
+| [`code-review`](https://www.aihero.dev/skills-code-review) | Review a diff against your standards and against the spec. |
+| [`research`](https://www.aihero.dev/skills-research) | Get a cited answer, read from primary sources. |
+| [`improve-codebase-architecture`](https://www.aihero.dev/skills-improve-codebase-architecture) | Find the modules worth refactoring, as a visual report. |
 | [`retro`](https://www.aihero.dev/skills-retro) | Look back on a session and suggest repo improvements. |
 
 ## Others
