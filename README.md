@@ -9,7 +9,27 @@ My personal collection of AI agent skills, shared publicly in case others find t
 | [`advise-me`](skills/advise-me/SKILL.md) | Manually invoked advisor for any technical or business decision, from "should I try X?" to an architecture or initiative. Checks the premise, looks for ways to make the problem go away, and gives one recommendation. | [Examples](skills/advise-me/examples.md): 13 real responses |
 | [`build-vs-buy`](skills/build-vs-buy/SKILL.md) | Manually invoked review for a significant decision: reuse existing code, use a platform capability, adopt a dependency or service, build custom code, or a mix. | [Examples](skills/build-vs-buy/examples.md): 12 real responses |
 | [`docs-optimizer`](skills/docs-optimizer/SKILL.md) | Manually invoked review and cleanup of repository instructions for AI agents. Fixes stale facts and conflicts, removes unnecessary context, and preserves required behavior. | [Examples](skills/docs-optimizer/examples.md): 10 real responses |
-| [`session-checkpoint`](skills/session-checkpoint/SKILL.md) | Manually invoked checkpoint before continuing work: assess whether to stay, compact, or start fresh, whether a handoff is needed, and which model and effort fit the next task. | [Examples](skills/session-checkpoint/examples.md): 10 real responses |
+| [`session-checkpoint`](skills/session-checkpoint/SKILL.md) | Manually invoked checkpoint: assess session, model, and effort changes; continue authorized work unless a user decision materially affects cost or outcome. | [Examples](skills/session-checkpoint/examples.md): 20 real responses; [Default model mapping](skills/session-checkpoint/model-mapping.md); [Overrides](#model-mapping-overrides) |
+
+### Model mapping overrides
+
+`session-checkpoint` includes a [default model mapping](skills/session-checkpoint/model-mapping.md). To use other models or vendors, add a short block to your existing global or project `AGENTS.md`, `CLAUDE.md`, or equivalent instructions that your agent already loads. You can also put the mapping directly in a checkpoint request. No new file or changes to the installed skill are needed.
+
+For example, replace the values below with exact model names and vendors you can use:
+
+```text
+For session-checkpoint, replace the default model mapping with:
+- Strongest: unavailable
+- Strong: <vendor and exact model name for difficult diagnosis and risky decisions>
+- Standard: <vendor and exact model name for bounded implementation>
+- Light: <vendor and exact model name for mechanical work>
+```
+
+Use any vendors, and list alternatives when useful. The tier definitions are in [the skill](skills/session-checkpoint/SKILL.md#model-and-effort). Plain text is enough; no parser or special syntax is required.
+
+A user mapping takes precedence over a runtime tier mapping, which takes precedence over the bundled defaults, subject to your agent's instruction rules. Each supplied mapping replaces the defaults completely, not just matching rows. Omitted or unavailable tiers stay unmapped. The skill uses a concrete model name for a change recommendation; if a material change needs an unmapped tier, it asks which available model to use. Missing mappings do not interrupt work that the current setup can reliably finish.
+
+The mapping is a recommendation guide, not model detection, an availability check, or a promise of equal capabilities or prices. Keep your overrides current as your access and model choices change.
 
 ## My Recommendations
 

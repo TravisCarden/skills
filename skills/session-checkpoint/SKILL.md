@@ -1,52 +1,68 @@
 ---
 name: session-checkpoint
-description: "Manually invoked checkpoint before continuing work: assess whether to stay, compact, or start fresh, whether a handoff is needed, and which model and effort fit the next task."
+description: "Manually invoked checkpoint: assess whether to continue, compact, or start fresh, whether a handoff is needed, and which model tier and effort fit the remaining work."
 disable-model-invocation: true
 user-invocable: true
 ---
 
 # Session Checkpoint
 
-Recommend the least costly reliable way to do the next bounded task. Use the conversation and available session information, not a repository audit. Assess only: do not compact, switch settings, write a handoff, or start work. Repository rules and required verification still apply.
+Assess whether the remaining work needs a session, model, or effort change. Base the assessment on the conversation and the runtime context, not on a fresh audit of the repository or environment. Repository rules and required verification stay in force.
 
-- **Continue** when current context helps. Session length alone does not justify a reset.
-- **Compact** when context space is constrained and a concise summary can preserve useful, reliable state.
-- **Start fresh** when stale assumptions, unrelated work, or accumulated corrections make continuation less reliable. Repeated missed constraints, contradictions, circular investigation, and ignored evidence are warning signs, not measured degradation or context thresholds. Do not compact before starting fresh.
-- Choose model and effort separately for the next task, not the hardest earlier task. Count retries, rework, switching, and context rebuilding as costs. Keep an adequate current configuration unless a concrete capability or cost benefit justifies changing it; a brief tool command alone does not justify a downgrade. A model or effort change alone does not require a fresh session.
-- Use known model settings when supplied; otherwise use the recommendation labels below. Do not research catalogs or invent availability, context measurements, or savings.
-- On pushback, change the recommendation only for a new fact or a flaw in your reasoning that you can name.
+## Continue or pause
 
-## Model ladder
+Continue authorized work in the same turn unless a user decision would materially affect total cost or the reliability of the outcome. Pause before the affected work for a worthwhile cost reduction, an important capability or effort change, or a needed session transition. Explain the concrete benefit or risk; marginal optimizations do not justify an interruption.
 
-Use these user-defined tiers, strongest to lightest:
+An explicit assessment-only request ends with the assessment. Do not start work the user has not authorized. If these rules are used for an internal check, stay silent and keep working unless a user decision is needed; do not turn each phase boundary into an announced checkpoint.
 
-| Tier | Anthropic label | OpenAI label |
-|---|---|---|
-| Maximum | Fable | Astra |
-| Strong | Opus | Sol |
-| Standard | Sonnet | Terra |
-| Light | Haiku | Luna |
+The user performs transitions. Do not change settings, compact, open a session, or write a handoff on the user's behalf.
 
-Choose the least costly reliable tier: Light for mechanical edits, Standard for bounded coding, Strong for difficult diagnosis or ambiguous design. Maximum needs a concrete reason Strong is insufficient. Assess low, medium, or high effort separately. Prefer the current vendor when known; otherwise give paired labels, such as Sonnet or Terra / medium. These are recommendations, not claims that vendors expose identical settings.
+## Decision
 
-## Preserve transition state
+- **Continue** when the current context still helps the remaining work. Session length alone does not justify a reset.
+- **Compact** when context space is constrained and a short summary can carry the reliable state forward.
+- **Start fresh** when stale assumptions, unrelated work, or accumulated corrections make continuation less reliable. Warning signs: repeated missed constraints, contradictions, circular investigation, and ignored evidence. Do not compact before starting fresh.
+- On pushback, change the verdict only for a new fact or a flaw in your reasoning that you can name.
 
-Essential state is the goal, unfinished changes, decisions, verification results, blockers, and exact next action. Prefer existing records. Recommend a handoff only when those records plus a short starter prompt cannot preserve essential state. A multi-paragraph prompt or nested checklist is a signal to use a handoff, not a reason to copy the transcript.
+## Model and effort
 
-The user decides how to create the handoff; never create it or imply it exists. In Do next, identify only the missing state it must preserve, rather than repeating a full checklist. Keep unverified work clearly marked.
+Identify the current model, vendor, and effort only from explicit runtime metadata or the user's statement, not from earlier recommendations or a tier mapping. Leave missing values unknown.
+
+Choose capability tier and low, medium, or high effort separately for the remaining bounded work, not the hardest earlier task:
+
+| Tier | Use for |
+|---|---|
+| Strongest | A concrete reason Strong is insufficient |
+| Strong | Difficult diagnosis, ambiguous design, safety-critical judgment |
+| Standard | Bounded implementation with clear acceptance criteria |
+| Light | Mechanical edits and data collection |
+
+Resolve model names from a user mapping in the conversation or already-loaded agent instructions (such as `AGENTS.md` or `CLAUDE.md`), then a runtime-supplied tier mapping. A mapping can be plain text assigning tiers to exact model names and vendors; no special file or syntax is required. A supplied mapping replaces the bundled defaults completely: omitted or unavailable tiers have no mapped model. Do not search for override files.
+
+Only when neither source supplies a mapping, read [model-mapping.md](model-mapping.md) for the default labels. Mappings do not establish identity, availability, equal prices, or identical capabilities and settings. Prefer the current vendor unless availability, user preference, or material benefit favors another; offer cross-vendor alternatives only when relevant, such as a reported quota limit.
+
+Name the mapped model in a change recommendation, not just its tier. If a material change needs a tier with no applicable model, state the needed capability and ask which available model to use instead of guessing or directing the user to an ambiguous category. An unresolved mapping alone does not justify interrupting adequate ongoing work.
+
+Compare total cost over the remaining work: retries, rework, switching, context rebuilding, lost prompt-cache savings when changing models or vendors, and likely later upgrades. Preserving the conversation does not preserve its cache across models. Keep an adequate current setup unless concrete evidence supports a material net benefit; an easier next step or a lower generation rate alone is not enough. Without that evidence, keep working rather than interrupting to price a switch. Lowering effort for a file read before raising it for analysis is not a useful saving. A model or effort change alone does not require a fresh session. Do not research catalogs or invent availability, cache measurements, context measurements, or savings.
+
+## Transition state
+
+Essential state is the goal, unfinished changes, decisions, verification results, blockers, and the exact next action. Prefer existing records: issue trackers, status files, commits. Recommend a handoff only when those records plus a short starter prompt cannot carry the essential state. If the prompt needs several paragraphs or a nested checklist, recommend a handoff instead of copying the transcript.
+
+The user decides how to create a handoff. Never create one or imply it exists. Mark unverified work as unverified.
 
 ## Output
 
-Use short, bold-labeled bullets in this order. Address the user directly; use no preamble, table, color markup, or concluding paragraph.
+For an explicit checkpoint with no material decision, give one short line saying to continue with the current model and effort. Use "keep current" for unknown settings; mark "(no change)" only when both settings are known. Then continue authorized work, unless the user asked for assessment only.
+
+For a material decision, use short bold-labeled bullets in this order, addressed to the user. No preamble, table, or closing paragraph.
 
 - **Session:** continue, compact, or start fresh
 - **Handoff:** no or recommended
-- **Model / effort:** model label(s) / effort; append “(no change)” only when both match the known current settings
-- **Reason:** optional, one short sentence with concrete evidence behind a transition or model change
-- **Do next:** direct actions or a deciding question, including prerequisites; no explanation
+- **Model / effort:** concrete mapped model / effort, or selection needed with the target tier if unresolved; mark "(no change)" only if both match the known current settings
+- **Reason:** one short sentence with the concrete benefit or risk that warrants the pause
+- **Do next:** direct actions for the user, including prerequisites. Keep a single action inline. Put distinct actions on separate numbered lines, including changing settings and resuming, compacting and resuming, or creating a handoff and opening a session. For a handoff, identify only the state missing from existing records.
 
-Omit Reason for ordinary continuation with unchanged settings, missing-task questions, and pushback without new facts. Put all actionable conditions in the decision or Do next bullets, never in Reason. If the next task is unspecified, retain the current model / effort and ask for the task under Do next; if current settings are also unspecified, say “keep current” rather than inventing them. Do not add availability disclaimers.
+If the next task is unknown, keep current settings and ask only for the missing task. Do not force a transition report or invent a reason for a change.
 
-Keep one action inline. Split distinct actions into numbered substeps rather than joining them with “then” or semicolons. This includes compacting and resuming, creating a handoff and opening a session, or changing settings and starting work. Avoid repeating instructions from the starter prompt in Do next.
-
-For start fresh, follow the bullets with **Starter prompt** and a fenced `text` block. Keep it to one short paragraph with the goal, relevant existing records or essential missing context, and exact next action. When a handoff is recommended, tell the user to create it before the transition and supply it in the new session; the prompt should refer to “the handoff I supply,” not an invented path or a placeholder. The prompt must be ready to paste unchanged and must not imply verification has passed.
+For start fresh, add **Starter prompt** in a fenced `text` block: one short paragraph with the goal, the records to read, and the exact next action. If a handoff is recommended, tell the user to create it first, and have the prompt refer to "the handoff I supply," not an invented path. The prompt must paste unchanged and must not imply that unverified work passed.
