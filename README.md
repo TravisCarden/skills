@@ -13,6 +13,16 @@ My personal collection of agent skills, shared publicly in case others find them
 
 All skills support manual invocation. `session-checkpoint` also supports model invocation for material transition decisions. Each skill page explains when to use it and links to its instructions and real example responses.
 
+## Install
+
+Install all the skills:
+
+```sh
+npx skills add https://github.com/TravisCarden/skills
+```
+
+To install one skill, use the command on its page.
+
 ## Other Public Skills
 
 See [my recommendations and exclusions](RECOMMENDATIONS.md) for skills from other authors.

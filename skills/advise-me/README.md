@@ -8,6 +8,12 @@ Use this when you have a proposed solution, a decision you are stuck on, or an o
 
 For a focused choice between reuse, a dependency, and custom code, see [build-vs-buy](../build-vs-buy/README.md).
 
+## Install
+
+```sh
+npx skills add https://github.com/TravisCarden/skills --skill advise-me
+```
+
 ## Use
 
 Invoke the skill manually with your question and relevant constraints:

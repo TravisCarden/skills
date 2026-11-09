@@ -8,6 +8,12 @@ Use this for stale commands, conflicting rules, repeated instructions, and unnec
 
 The skill checks how instructions load before moving or merging them. A repeated rule is not redundant if removing it changes which tasks or paths receive it. If loading behavior is unknown, the skill should report that limit rather than rearrange rules on an assumption.
 
+## Install
+
+```sh
+npx skills add https://github.com/TravisCarden/skills --skill docs-optimizer
+```
+
 ## Use
 
 Invoke the skill manually and name the files or scope. Ask for an audit to get findings without edits:

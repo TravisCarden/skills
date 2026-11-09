@@ -6,6 +6,12 @@ Decide whether the remaining work warrants a different session, model, or effort
 
 Use this when you want to reassess context quality, model capability, or total cost, including when moving to a new task in the same subsystem. The model can also invoke it before work that needs a material decision or at task completion when transition advice is useful. Session length alone is not a reason to reset. A brief easier step is not a reason to downgrade and immediately switch back.
 
+## Install
+
+```sh
+npx skills add https://github.com/TravisCarden/skills --skill session-checkpoint
+```
+
 ## Use
 
 Invoke the skill manually with the remaining task and any known settings or constraints:

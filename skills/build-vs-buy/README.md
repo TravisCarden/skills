@@ -8,6 +8,12 @@ Use this before adding a dependency or service, replacing a component, or buildi
 
 For broader questions about whether the problem needs solving at all, see [advise-me](../advise-me/README.md).
 
+## Install
+
+```sh
+npx skills add https://github.com/TravisCarden/skills --skill build-vs-buy
+```
+
 ## Use
 
 Invoke the skill manually with the requirement, constraints, and relevant project context:
