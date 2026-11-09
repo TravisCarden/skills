@@ -26,7 +26,7 @@ At task completion, the agent appends a checkpoint to its normal final response 
 
 ## What it decides
 
-- **Session:** continue with useful context, compact reliable state under context pressure, or start fresh when recurring stale assumptions make continuation less reliable.
+- **Session:** continue with useful context, compact reliable state under context pressure (or drop stale tool output when the harness offers it), or start fresh when recurring stale assumptions make continuation less reliable.
 - **Model and effort:** choose each for the remaining work. Total cost includes retries, switching, rebuilding context, lost prompt-cache savings, and likely later upgrades.
 - **Handoff:** recommend one only when existing records and a short starter prompt cannot carry the essential state. Fresh-session recommendations include a paste-ready starter prompt.
 
@@ -56,6 +56,6 @@ The mapping is a recommendation guide, not model detection, an availability chec
 
 - [Skill instructions](SKILL.md)
 - [Default model mapping](model-mapping.md)
-- [25 real example responses](examples.md), including completion-time advice, silent internal checks, same-subsystem task changes, cache costs, and model mapping overrides
+- [27 real example responses](examples.md), including completion-time advice, silent internal checks, same-subsystem task changes, cache costs, dropping stale tool output, and model mapping overrides
 
 The examples ran without tools. They demonstrate decision and output behavior, not measured savings or live-session performance.
