@@ -32,6 +32,8 @@ At task completion, the agent appends a checkpoint to its normal final response 
 
 The agent does not change settings, compact, open a session, or create a handoff for you. It does not invent current settings, availability, or measured savings.
 
+For bulky disposable output under context pressure, the agent prefers pruning without summarizing. It names a command only when runtime context, loaded instructions, the user, or a directly exposed agent-callable registry establishes its availability and behavior. It does not search configuration or assume an extension API is an agent tool. Essential evidence must remain available; pruning is not a remedy for recurring stale assumptions. If pruning is unavailable or insufficient, compact instead.
+
 ## Model mapping overrides
 
 `session-checkpoint` includes a [default model mapping](model-mapping.md). To use other models or vendors, add a short block to your existing global or project `AGENTS.md`, `CLAUDE.md`, or equivalent instructions that your agent already loads. You can also put the mapping directly in a checkpoint request. No new file or changes to the installed skill are needed.
@@ -56,6 +58,6 @@ The mapping is a recommendation guide, not model detection, an availability chec
 
 - [Skill instructions](SKILL.md)
 - [Default model mapping](model-mapping.md)
-- [27 real example responses](examples.md), including completion-time advice, silent internal checks, same-subsystem task changes, cache costs, dropping stale tool output, and model mapping overrides
+- [37 real example responses](examples.md), including pruning availability, essential evidence, exposed registries, completion-time advice, silent internal checks, cache costs, and model mapping overrides
 
 The examples ran without tools. They demonstrate decision and output behavior, not measured savings or live-session performance.

@@ -21,9 +21,11 @@ The user performs transitions. Do not change settings, compact, open a session, 
 ## Decision
 
 - **Continue** when the current context still helps the remaining work. Session length alone does not justify a reset.
-- **Compact** when context space is constrained and a short summary can carry the reliable state forward. If bulky tool results rather than the conversation fill the context, prefer dropping stale tool output over summarizing when the harness offers it. Take that from runtime context, loaded instructions, or the user. If it is unknown, recommend dropping tool output if available, with compact as the fallback. Do not name a command you cannot see.
+- **Compact** when context space is constrained and a short summary can carry the reliable state forward. When disposable bulky output fills the context, prefer non-summarizing pruning if the runtime offers it. Preserve essential evidence or confirm it can be recovered; old output is not necessarily disposable. Pruning does not repair stale assumptions. If pruning is unavailable or leaves too little room, compact.
 - **Start fresh** when stale assumptions, unrelated work, or accumulated corrections make continuation less reliable. Warning signs: repeated missed constraints, contradictions, circular investigation, and ignored evidence. Do not compact before starting fresh.
 - On pushback, change the verdict only for a new fact or a flaw in your reasoning that you can name.
+
+For pruning, use availability and behavior established by runtime context, loaded instructions, or the user. Consult a directly exposed, agent-callable command registry only when pruning is relevant and support is unknown. An extension API or harness name does not establish agent access or command availability. Do not search files, probe the environment, or invent commands or installed plugins. If support stays unknown, offer pruning conditionally, with compaction as the fallback. Recommend the operation; leave execution to the user.
 
 ## Model and effort
 
