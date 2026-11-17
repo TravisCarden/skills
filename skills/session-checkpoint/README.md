@@ -26,9 +26,8 @@ At task completion, the agent appends a checkpoint to its normal final response 
 
 ## What it decides
 
-- **Session:** continue with useful context, compact reliable state under context pressure (or drop stale tool output when the harness offers it), or start fresh when recurring stale assumptions make continuation less reliable.
+- **Session:** continue with useful context, compact reliable state under context pressure (or drop stale tool output when the harness offers it), or start fresh when recurring stale assumptions make continuation less reliable. A handoff appears here only when existing records and a short starter prompt cannot carry the essential state. Fresh-session recommendations include a paste-ready starter prompt.
 - **Model and effort:** choose each for the remaining work. Total cost includes retries, switching, rebuilding context, lost prompt-cache savings, and likely later upgrades.
-- **Handoff:** recommend one only when existing records and a short starter prompt cannot carry the essential state. Fresh-session recommendations include a paste-ready starter prompt.
 
 The agent does not change settings, compact, open a session, or create a handoff for you. It does not invent current settings, availability, or measured savings.
 
