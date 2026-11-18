@@ -1,6 +1,6 @@
 ---
 name: session-checkpoint
-description: "Assess whether to continue, compact, or start fresh, whether a handoff is needed, and which model tier and effort fit the next work. Use for explicit session-transition questions, at task completion when a known next task or context problem warrants transition advice, or before work that needs a material session or model decision."
+description: "Assess whether to continue, compact, or start fresh, whether a handoff is needed, and which model tier and effort fit the next work. Use for explicit session-transition questions, when new evidence breaks the reliability of the current plan or recommendation, at task completion when a known next task or context problem warrants transition advice, or before work that needs a material session or model decision."
 user-invocable: true
 ---
 
@@ -8,11 +8,17 @@ user-invocable: true
 
 Assess whether the remaining work needs a session, model, or effort change. Base the assessment on the conversation and the runtime context, not on a fresh audit of the repository or environment. Repository rules and required verification stay in force.
 
+Reassess when new evidence invalidates a recommendation or exposes stale assumptions, contradictions, or repeated missed constraints that make the current approach unreliable. This reliability break triggers an assessment, not an automatic transition or end of turn. Distinguish a local, recoverable mistake from a session state that can no longer reliably guide the remaining work.
+
 ## Continue or pause
 
-Continue authorized work in the same turn unless a user decision would materially affect total cost or the reliability of the outcome. Pause before the affected work for a worthwhile cost reduction, an important capability or effort change, or a needed session transition. Explain the concrete benefit or risk; marginal optimizations do not justify an interruption. Completing a phase is not completing the user's request.
+An explicit invocation without an instruction to execute work is assessment-only, even when previously authorized work remains. Approval alone does not request execution. Recognize execution intent from ordinary language anywhere in the user's request, not a required keyword, command spelling, or argument: asking to proceed, finish the work, or get on with it can all request assessment followed by action. An explicit request to assess only or not start work takes precedence.
 
-An explicit assessment-only request ends with the assessment. Do not start work the user has not authorized. Internal checks stay silent while work continues unless a user decision is needed.
+Use the conversation to identify the work and its authorization. A direct request to do a task, or to go ahead with a clearly identified proposed plan, can authorize that work; invoking the skill alone cannot. If the intended work or permission is unclear, ask only for what is missing rather than inventing a task or approval.
+
+When execution is requested, or during an internal check while working, continue authorized work in the same turn unless a user decision would materially affect total cost or the reliability of the outcome. Pause before the affected work for a worthwhile cost reduction, an important capability or effort change, or a needed session transition. An instruction to proceed does not override that pause. Explain the concrete benefit or risk; marginal optimizations do not justify an interruption. Completing a phase is not completing the user's request.
+
+Assessment-only invocations end with the assessment. Otherwise, if the assessment chooses continue, perform the next authorized action in the same turn; do not end with a status update, a promise to resume, or a request for permission already given. Ordinary continuation, a completed slice, and a recoverable mistake are not reasons to stop execution. Internal checks stay silent while work continues unless a user decision is needed.
 
 After completing the requested work, append a checkpoint to the normal final response only when a known next task or a concrete context problem warrants a material recommendation. Otherwise finish without checkpoint boilerplate or asking for another task. The checkpoint follows a justified stop; it does not create one.
 
@@ -54,7 +60,7 @@ The user decides how to create a handoff. Never create one or imply it exists. M
 
 ## Output
 
-For an explicit checkpoint with no material decision, give one short line saying to continue with the current model and effort. Use "keep current" for unknown settings; mark "(no change)" only when both settings are known. Then continue authorized work, unless the user asked for assessment only.
+For an explicit checkpoint with no material decision, give one short line saying to continue with the current model and effort. Use "keep current" for unknown settings; mark "(no change)" only when both settings are known. If execution was requested, this is a non-blocking progress report: immediately perform the next authorized action in the same turn. Otherwise end with the assessment. Honor requests to omit the continue report, but still surface material decisions that require the user's intervention.
 
 For a material decision, use short bold-labeled bullets in this order, addressed to the user. For an internal check at task completion, append them after the normal final response; otherwise give the checkpoint directly. The checkpoint itself needs no preamble, table, or closing paragraph.
 

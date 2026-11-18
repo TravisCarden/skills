@@ -4,7 +4,7 @@ Decide whether the remaining work warrants a different session, model, or effort
 
 ## When to use it
 
-Use this when you want to reassess context quality, model capability, or total cost, including when moving to a new task in the same subsystem. The model can also invoke it before work that needs a material decision or at task completion when transition advice is useful. Session length alone is not a reason to reset. A brief easier step is not a reason to downgrade and immediately switch back.
+Use this when you want to reassess context quality, model capability, or total cost, including when moving to a new task in the same subsystem. The model can also invoke it when new evidence invalidates a recommendation or exposes unreliable assumptions, before work that needs a material decision, or at task completion when transition advice is useful. Session length alone is not a reason to reset. A brief easier step is not a reason to downgrade and immediately switch back.
 
 ## Install
 
@@ -14,13 +14,23 @@ npx skills add https://github.com/TravisCarden/skills --skill session-checkpoint
 
 ## Use
 
-Invoke the skill manually with the remaining task and any known settings or constraints:
+Invoke the skill by itself for an assessment, even if previously authorized work remains. Include the remaining task and any known settings or constraints when they are not already in the conversation:
 
 ```text
 /session-checkpoint Context is accurate. The design is settled, and a large batch of specified mechanical edits and verification remains. Is a model or effort change worth it? Assess only.
 ```
 
-Without an assessment-only request, the agent continues work you have already authorized unless your decision would materially affect cost or outcome. A worthwhile net saving, risky work that needs stronger judgment, or a needed session transition can justify a pause. Completing a phase does not justify stopping while requested work remains.
+To assess and act, ask in ordinary language. No special argument or exact phrase is required. For example, after receiving a proposed plan:
+
+```text
+Approved. /session-checkpoint and proceed.
+```
+
+"Proceed according to session-checkpoint," "check first, then go ahead," and "quick checkpoint, then finish the work" express the same intent. Approval alone, followed by the invocation, is still assessment-only. "Assess only" or "don't start yet" keeps the invocation assessment-only even if the request also mentions proceeding.
+
+When action is requested and no material decision is needed, the agent briefly reports the continue decision, current model, and effort, then performs the next authorized action in the same turn without waiting for another reply. You can request no report when continuing. A direct request to do a task or go ahead with a clear proposed plan can authorize it; invoking the skill alone does not. If the task or permission is unclear, the agent asks for the missing information.
+
+A worthwhile net saving, risky work that needs stronger judgment, or a needed session transition can justify a pause before affected work even when you ask to proceed. A reliability break triggers reassessment, not an automatic stop: a recoverable mistake or completed slice does not justify ending an execution turn. Internal assessments that choose continue perform the next authorized action in that same turn rather than promising to resume or asking for permission again.
 
 At task completion, the agent appends a checkpoint to its normal final response only when a known next task or a concrete context problem warrants a material recommendation. Otherwise it finishes without checkpoint boilerplate or asking what to do next. Internal checks stay silent while work continues unless a decision is needed.
 
@@ -58,4 +68,4 @@ The mapping is a recommendation guide, not model detection, an availability chec
 - [Default model mapping](model-mapping.md)
 - [27 real example responses](examples.md), including completion-time advice, silent internal checks, same-subsystem task changes, cache costs, dropping stale tool output, and model mapping overrides
 
-The examples ran without tools. They demonstrate decision and output behavior, not measured savings or live-session performance.
+The examples ran without tools. They demonstrate decision and output behavior, not measured savings, command routing, or live-session tool execution.
