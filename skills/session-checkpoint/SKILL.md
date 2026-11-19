@@ -27,9 +27,11 @@ The user performs transitions. Do not change settings, compact, open a session, 
 ## Decision
 
 - **Continue** when the current context still helps the remaining work. Session length alone does not justify a reset.
-- **Compact** when context space is constrained and a short summary can carry the reliable state forward. If bulky tool results rather than the conversation fill the context, prefer dropping stale tool output over summarizing when the harness offers it. Take that from runtime context, loaded instructions, or the user. If it is unknown, recommend dropping tool output if available, with compact as the fallback. Do not name a command you cannot see.
+- **Compact** when context space is constrained and a short summary can carry the reliable state forward. When disposable bulky output fills the context, prefer non-summarizing pruning if the runtime offers it. Preserve essential evidence or confirm it can be recovered; old output is not necessarily disposable. Pruning does not repair stale assumptions. If pruning is unavailable or leaves too little room, compact.
 - **Start fresh** when stale assumptions, unrelated work, or accumulated corrections make continuation less reliable. Warning signs: repeated missed constraints, contradictions, circular investigation, and ignored evidence. Do not compact before starting fresh.
 - On pushback, change the verdict only for a new fact or a flaw in your reasoning that you can name.
+
+For pruning, use availability and behavior established by runtime context, loaded instructions, or the user. Consult a directly exposed, agent-callable command registry only when pruning is relevant and support is unknown. An extension API or harness name does not establish agent access or command availability. Do not search files, probe the environment, or invent commands or installed plugins. If support stays unknown, offer pruning conditionally, with compaction as the fallback. Recommend the operation; leave execution to the user.
 
 ## Model and effort
 
@@ -62,12 +64,11 @@ The user decides how to create a handoff. Never create one or imply it exists. M
 
 For an explicit checkpoint with no material decision, give one short line saying to continue with the current model and effort. Use "keep current" for unknown settings; mark "(no change)" only when both settings are known. If execution was requested, this is a non-blocking progress report: immediately perform the next authorized action in the same turn. Otherwise end with the assessment. Honor requests to omit the continue report, but still surface material decisions that require the user's intervention.
 
-For a material decision, use short bold-labeled bullets in this order, addressed to the user. For an internal check at task completion, append them after the normal final response; otherwise give the checkpoint directly. The checkpoint itself needs no preamble, table, or closing paragraph.
+For a material decision, use short bold-labeled bullets in this order, addressed to the user. For an internal check at task completion, append them after the normal final response; otherwise give the checkpoint directly. The checkpoint itself needs no preamble, table, or closing paragraph. Keep each recommendation field to one concise line; Do next may contain numbered actions. Do not add commentary about unknown current settings.
 
-- **Session:** continue, compact (or drop tool output), or start fresh
-- **Handoff:** no or recommended
-- **Model / effort:** concrete mapped model / effort, or selection needed with the target tier if unresolved; mark "(no change)" only if both match the known current settings
-- **Reason:** one short sentence with the concrete benefit or risk that warrants the recommendation
+- **Session:** continue, compact (or drop tool output), start fresh, or start fresh with handoff. Name a handoff only when it is recommended; omit any "no handoff" statement.
+- **Model / effort:** the value alone, such as `Sol / high`, or `keep current`, or selection needed with the target tier if unresolved. Add "(no change)" only when both settings are known and match. Nothing else: no commentary, and no remarks about the current settings being unknown. Explanations go in Reason.
+- **Reason:** one short sentence with the concrete benefit or risk behind the whole recommendation, including the session choice and any handoff
 - **Do next:** direct actions for the user, including prerequisites. Keep a single action inline. Put distinct actions on separate numbered lines, including changing settings and resuming, compacting and resuming, or creating a handoff and opening a session. For a handoff, identify only the state missing from existing records.
 
 If the next task is unknown, keep current settings. For an explicit checkpoint, ask only for the missing task rather than forcing a transition report. For an internal check, omit the checkpoint unless a concrete context problem warrants a transition recommendation; do not invent the next task.

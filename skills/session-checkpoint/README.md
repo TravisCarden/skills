@@ -36,11 +36,12 @@ At task completion, the agent appends a checkpoint to its normal final response 
 
 ## What it decides
 
-- **Session:** continue with useful context, compact reliable state under context pressure (or drop stale tool output when the harness offers it), or start fresh when recurring stale assumptions make continuation less reliable.
+- **Session:** continue with useful context, compact reliable state under context pressure (or drop stale tool output when the harness offers it), or start fresh when recurring stale assumptions make continuation less reliable. A handoff appears here only when existing records and a short starter prompt cannot carry the essential state. Fresh-session recommendations include a paste-ready starter prompt.
 - **Model and effort:** choose each for the remaining work. Total cost includes retries, switching, rebuilding context, lost prompt-cache savings, and likely later upgrades.
-- **Handoff:** recommend one only when existing records and a short starter prompt cannot carry the essential state. Fresh-session recommendations include a paste-ready starter prompt.
 
 The agent does not change settings, compact, open a session, or create a handoff for you. It does not invent current settings, availability, or measured savings.
+
+For bulky disposable output under context pressure, the agent prefers pruning without summarizing. It names a command only when runtime context, loaded instructions, the user, or a directly exposed agent-callable registry establishes its availability and behavior. It does not search configuration or assume an extension API is an agent tool. Essential evidence must remain available; pruning is not a remedy for recurring stale assumptions. If pruning is unavailable or insufficient, compact instead.
 
 ## Model mapping overrides
 
@@ -66,6 +67,6 @@ The mapping is a recommendation guide, not model detection, an availability chec
 
 - [Skill instructions](SKILL.md)
 - [Default model mapping](model-mapping.md)
-- [27 real example responses](examples.md), including completion-time advice, silent internal checks, same-subsystem task changes, cache costs, dropping stale tool output, and model mapping overrides
+- [37 real example responses](examples.md), including pruning availability, essential evidence, exposed registries, completion-time advice, silent internal checks, cache costs, and model mapping overrides
 
 The examples ran without tools. They demonstrate decision and output behavior, not measured savings, command routing, or live-session tool execution.

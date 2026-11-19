@@ -2,7 +2,7 @@
 
 Real, unedited responses from the final [`session-checkpoint`](SKILL.md) skill, generated on 2026-11-18. Each request used a fresh stateless call with the skill body and bundled [default model mapping](model-mapping.md) as system context, without tools. The harness selected its default model; the concrete model ID was not exposed.
 
-Technical claims are unverified. These hypothetical scenarios show decision and output behavior, not measured savings, live tool execution, or automatic discovery. Custom deployment aliases are hypothetical. Tool-dependent requests cannot establish same-turn execution here. An explicit assessment without an execution instruction stops after the assessment; internal checks during work remain silent unless intervention is needed.
+Technical claims are unverified. These hypothetical scenarios show decision and output behavior, not measured savings, live command discovery, tool execution, or automatic invocation. Custom deployment aliases are hypothetical. Runtime command descriptions are scenario inputs, not a current command catalog. Tool-dependent requests cannot establish same-turn execution here. Explicit assessments without execution instructions stop after the assessment; internal checks during work remain silent unless intervention is needed.
 
 This file is for people. `SKILL.md` does not reference or load it.
 
@@ -35,6 +35,16 @@ This file is for people. `SKILL.md` does not reference or load it.
 - [Finish without an automatic checkpoint](#finish-without-an-automatic-checkpoint)
 - [Continue beyond an internal phase boundary](#continue-beyond-an-internal-phase-boundary)
 - [Recommend a reset without inventing the next task](#recommend-a-reset-without-inventing-the-next-task)
+- [Do not infer commands from a harness name](#do-not-infer-commands-from-a-harness-name)
+- [Do not call an extension API](#do-not-call-an-extension-api)
+- [Protect essential old evidence](#protect-essential-old-evidence)
+- [Pruning cannot fix stale assumptions](#pruning-cannot-fix-stale-assumptions)
+- [Do not prune without pressure](#do-not-prune-without-pressure)
+- [Fallback after pruning fails](#fallback-after-pruning-fails)
+- [Use an exposed plugin command](#use-an-exposed-plugin-command)
+- [Hold on unsupported command pushback](#hold-on-unsupported-command-pushback)
+- [Consult only an exposed registry](#consult-only-an-exposed-registry)
+- [Do not confuse summarization with pruning](#do-not-confuse-summarization-with-pruning)
 
 ---
 
@@ -46,7 +56,7 @@ _Agrees with a sound plan without adding transition overhead._
 
 **Response:**
 
-> Continue with Terra at medium effort (no change); the context remains useful for running the web app’s `npm test`.
+> Continue with Terra at medium effort (no change); the context remains useful, and running the web app’s `npm test` needs no transition.
 
 ---
 
@@ -58,13 +68,12 @@ _Preserves reliable state when the harness reports context pressure._
 
 **Response:**
 
-> - **Session:** Drop stale tool output if the harness supports it; otherwise compact.
-> - **Handoff:** No.
+> - **Session:** compact.
 > - **Model / effort:** Sonnet / medium (no change).
-> - **Reason:** Context is constrained, but reasoning remains reliable; retain the debugging state without resetting or switching models.
+> - **Reason:** Context is nearly exhausted, but consistent reasoning makes a concise summary preferable to a fresh start.
 > - **Do next:**
->   1. Preserve a concise summary of the exact failing build command, observed error, config changes, and pending verification; mark unverified changes explicitly.
->   2. Drop stale tool output if available, or compact with that summary, then resume the Vite debugging task by running the pending verification.
+>   1. Compact, preserving the exact failing build command and error, config changes, and pending verification; mark unverified changes explicitly.
+>   2. Resume the Vite debugging task from the pending verification.
 
 ---
 
@@ -76,11 +85,12 @@ _Names dropping tool output as a conditional first choice, with compact as the f
 
 **Response:**
 
-> - **Session:** Drop stale tool output if available; otherwise compact.
-> - **Handoff:** No.
-> - **Model / effort:** Sonnet / medium (no change).
-> - **Reason:** Large logs and file dumps are filling context; the consistent conversation remains useful.
-> - **Do next:** Remove stale tool output if your interface supports it, or compact while preserving the checkout failure, unfinished changes, verification results, and exact next action. Then resume fixing the failing checkout test.
+> - **Session:** drop bulky tool output if supported; otherwise compact.
+> - **Model / effort:** Sonnet / medium (no change)
+> - **Reason:** Context space is nearly exhausted, but the consistent reasoning remains useful; a fresh session would discard valuable state.
+> - **Do next:**
+>   1. If your runtime supports pruning, remove recoverable logs and file dumps while retaining key failure evidence. Otherwise compact, preserving the checkout-test failure, unfinished changes, decisions, verification results, and exact next action.
+>   2. Resume fixing the failing checkout test.
 
 ---
 
@@ -92,13 +102,10 @@ _Recommends the harness's own command when runtime context lists it._
 
 **Response:**
 
-> - **Session:** drop stale tool output
-> - **Handoff:** no
+> - **Session:** drop tool output.
 > - **Model / effort:** Sonnet / medium (no change)
-> - **Reason:** Large tool outputs are filling context; dropping stale output preserves the useful, consistent conversation without summarizing it.
-> - **Do next:**
->   1. Run `/shake`.
->   2. Resume fixing the failing checkout test.
+> - **Reason:** Pruning bulky logs and dumps frees context while preserving the useful, consistent conversation.
+> - **Do next:** Run `/shake`, preserving essential failure evidence or ensuring it can be recovered.
 
 ---
 
@@ -110,15 +117,14 @@ _Preserves unfinished changes and a failing reproduction in a paste-ready prompt
 
 **Response:**
 
-> - **Session:** start fresh
-> - **Handoff:** no; the investigation doc plus the starter prompt below carry the essential state.
-> - **Model / effort:** keep current / keep current.
-> - **Reason:** Repeated obsolete React Router assumptions despite corrections make the current context unreliable, rather than indicating a single recoverable mistake.
-> - **Do next:** Open a fresh session and paste this prompt; do not compact first.
+> - **Session:** start fresh.
+> - **Model / effort:** keep current.
+> - **Reason:** Repeated obsolete API assumptions despite corrections make this context unreliable; the existing record and a short starter prompt are sufficient.
+> - **Do next:** Open a fresh session and paste the starter prompt below.
 >
 > **Starter prompt**
 > ```text
-> Investigate why /settings still redirects to /login after a successful sign-in. Read docs/routing-investigation.md for the goal, decisions, and reproduction command, then inspect the unverified edit in src/routes.tsx. Prior attempts repeatedly relied on obsolete React Router APIs despite corrections; verify assumptions against the installed version. The latest reproduction still fails, and there are no other blockers. Next, trace the route guards before making further edits.
+> Investigate why /settings still redirects to /login after a successful sign-in. Read docs/routing-investigation.md for the goal, decisions, and reproduction command. src/routes.tsx contains an unverified edit; the latest reproduction still fails. Previous investigation repeatedly relied on obsolete React Router APIs despite corrections, so verify the installed version and applicable APIs rather than carrying those assumptions forward. Next, trace the route guards before making any edits. No other blocker is known.
 > ```
 
 ---
@@ -131,7 +137,7 @@ _Asks for the next task instead of guessing whether a downgrade is worthwhile._
 
 **Response:**
 
-> Continue with Sol at medium effort (no change). What is the next task?
+> Keep current: Sol at medium effort (no change). What is the next task?
 
 ---
 
@@ -143,7 +149,7 @@ _Keeps the recommendation when no facts change._
 
 **Response:**
 
-> Continue with Haiku at low effort (no change): session length alone does not justify starting fresh; the context remains accurate and the next task is still a mechanical CSS class rename.
+> Continue with Haiku at low effort (no change). Session length alone doesn’t justify starting fresh; the accurate context still supports the mechanical CSS class rename.
 
 ---
 
@@ -155,18 +161,16 @@ _Recommends a handoff without writing it or inventing its location._
 
 **Response:**
 
-> - **Session:** start fresh
-> - **Handoff:** recommended
-> - **Model / effort:** OpenAI Sol / high
-> - **Reason:** Recurring corrected assumptions make continuation unreliable, and no durable record preserves the investigation.
+> - **Session:** start fresh with handoff.
+> - **Model / effort:** Sol / high
+> - **Reason:** Recurring corrected assumptions undermine reliability; a handoff preserves essential evidence that exists only in this conversation.
 > - **Do next:**
->   1. Create a handoff using your own command, preserving the reproduction, rejected hypotheses and supporting evidence, corrected assumptions, and exact unverified changes. Identify tracing invalidation event order as the next action.
->   2. Select OpenAI Sol with high effort, if available.
->   3. Open a fresh session and supply your handoff with the starter prompt below.
+>   1. Create a handoff using your own command, capturing the reproduction, rejected hypotheses and corrected assumptions, unverified changes, and remaining blockers.
+>   2. Open a fresh session with Sol at high effort, supply the handoff, and paste the starter prompt below.
 >
 > **Starter prompt**
 > ```text
-> Investigate the difficult intermittent cache invalidation bug. Read the handoff I supply for the reproduction, rejected hypotheses, corrected assumptions, and unverified changes; do not treat those changes as validated. First trace the invalidation event order before editing, using the evidence to distinguish remaining hypotheses without reopening rejected ones unless new evidence warrants it.
+> Investigate the intermittent cache invalidation bug. Read the handoff I supply for the reproduction, rejected hypotheses, corrected assumptions, unverified changes, and blockers. Treat those changes as unverified. First trace the invalidation event order against the reproduction before making any edits.
 > ```
 
 ---
@@ -179,7 +183,7 @@ _Considers switching costs rather than downgrading for a small mechanical task._
 
 **Response:**
 
-> Continue with Astra / high (no change). Please supply the two file paths and exact replacements so I can perform the rename and run `npm test`.
+> Continue with Astra / high (no change); this small remaining task does not justify switching overhead. Please provide the two file paths and exact replacements so I can apply the rename and run `npm test`.
 
 ---
 
@@ -192,12 +196,9 @@ _Pauses for an effort decision that affects the quality of the remaining analysi
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
 > - **Model / effort:** Sol / high
-> - **Reason:** Keep Sol; higher effort is warranted to trace competing async interleavings carefully and avoid overlooking a valid ordering before editing.
-> - **Do next:**
->   1. Raise effort to high in the current session.
->   2. Resume tracing the three functions’ event interleavings using the existing reproduction and evidence before making edits.
+> - **Reason:** Accurate context supports continuation; tracing async interleavings warrants higher effort, not a model switch or reset.
+> - **Do next:** Raise effort to high in place before tracing the event interleavings.
 
 ---
 
@@ -209,7 +210,7 @@ _Asks for the missing task without inventing current settings._
 
 **Response:**
 
-> Keep current model and effort settings. What task would you like to do next?
+> Keep current model and effort. What task would you like to work on next?
 
 ---
 
@@ -222,10 +223,9 @@ _Pauses before consequential work while preserving useful session context._
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
-> - **Model / effort:** Anthropic Opus / high
-> - **Reason:** Tenant-isolation and rollback risks warrant stronger judgment than Haiku / low; the reliable context should be preserved.
-> - **Do next:** Switch to Opus at high effort before evaluating the migration strategy.
+> - **Model / effort:** Opus / high
+> - **Reason:** Reliable context should be retained, but tenant-isolation and rollback risks warrant stronger reasoning than Haiku / low.
+> - **Do next:** Switch to Opus / high before evaluating the migration strategy.
 
 ---
 
@@ -237,7 +237,7 @@ _Keeps the current setup across a file read followed by analysis._
 
 **Response:**
 
-> Continue with Opus / high (no change); lowering effort just for the short read offers no material benefit before the difficult event-order analysis.
+> Continue with Opus / high (no change); lowering effort for one short read before difficult event-order analysis offers no meaningful savings.
 
 ---
 
@@ -249,7 +249,7 @@ _Rejects a nominally cheaper model when losing the warm cache makes the switch c
 
 **Response:**
 
-> Continue with Sol / medium (no change); the cache-refill cost exceeds the remaining savings from switching to Terra.
+> Continue with Sol / medium (no change); switching to Terra would cost more in cache refill than it saves on the remaining work.
 
 ---
 
@@ -262,12 +262,11 @@ _Treats a material net cost reduction as a reason to ask the user before continu
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
 > - **Model / effort:** Luna / low
-> - **Reason:** Your estimate shows substantial total-cost savings, Luna is reliable for the remaining mechanical work, and the context is accurate.
+> - **Reason:** Your accurate context can stay in place, and switching substantially reduces total remaining cost while retaining reliable execution.
 > - **Do next:**
->   1. Switch to Luna / low; no session reset is needed.
->   2. Supply the exact edit list and specified verification, which are not present in this conversation, then resume the authorized batch.
+>   1. Switch to Luna with low effort in this session.
+>   2. Resume the authorized mechanical edits and their specified verification.
 
 ---
 
@@ -280,12 +279,11 @@ _Uses the mapping for an alternative without treating it as proof of identity or
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
-> - **Model / effort:** OpenAI Sol / high
-> - **Reason:** Anthropic’s exhausted quota requires a vendor switch; Sol suits the difficult diagnosis, and the reliable existing context is worth preserving despite losing the prompt cache.
+> - **Model / effort:** Sol / high
+> - **Reason:** Anthropic’s exhausted quota requires a vendor switch; the reliable investigation context remains useful despite losing the prompt cache.
 > - **Do next:**
 >   1. Switch in place to OpenAI Sol with high effort.
->   2. Resume the diagnosis using the existing conversation and investigation record.
+>   2. Resume the difficult diagnosis using the existing conversation and investigation record.
 
 ---
 
@@ -298,10 +296,9 @@ _Asks for an exact available model rather than directing the user to an ambiguou
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
-> - **Model / effort:** selection needed—Strong capability / high effort; current settings unknown
-> - **Reason:** The isolation and rollback risks warrant safety-critical judgment, while the reliable context gives no reason to reset.
-> - **Do next:** Which available model from your vendor should fill the Strong tier? Provide its name or your tier mapping; no migration work has started.
+> - **Model / effort:** selection needed (Strong tier) / high
+> - **Reason:** Keep the reliable context; migration, rollback, and tenant-isolation risks warrant Strong capability and high effort.
+> - **Do next:** Supply your vendor’s model-to-tier mapping, or identify an available model suitable for Strong-tier analysis.
 
 ---
 
@@ -326,9 +323,8 @@ _Uses exact user-supplied deployment aliases rather than the bundled vendors._
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
 > - **Model / effort:** Kimi / review-deployment / high
-> - **Reason:** The risky migration and its rollback and tenant-isolation constraints require Strong capability; the accurate context does not need a reset.
+> - **Reason:** Your context is accurate, but the migration’s rollback and tenant-isolation risks warrant stronger reasoning than the current Light deployment at low effort.
 > - **Do next:**
 >   1. Switch to Kimi / review-deployment at high effort.
 >   2. Resume the migration decision in this session.
@@ -344,10 +340,9 @@ _Asks for an exact model when a partial override leaves the required tier unmapp
 **Response:**
 
 > - **Session:** continue
-> - **Handoff:** no
-> - **Model / effort:** selection needed: Light-tier model / low effort
-> - **Reason:** Your runtime estimate establishes substantial net savings for the mechanical batch and specified verification, but your mapping omits Light.
-> - **Do next:** Identify an available Light-tier model and vendor to use; keep Kimi / review-deployment at high effort until that selection is resolved.
+> - **Model / effort:** selection needed (Light tier) / low
+> - **Reason:** Your estimate establishes substantial net savings for the mechanical batch, with no evidence that the session needs resetting.
+> - **Do next:** Which available model should fill the Light tier in your mapping?
 
 ---
 
@@ -371,10 +366,9 @@ _Resolves a recommendation from the user override rather than the runtime mappin
 
 **Response:**
 
-> - **Session:** continue
-> - **Handoff:** no
-> - **Model / effort:** Meta / reasoning-deployment / high
-> - **Reason:** Your override replaces the runtime mapping; security-sensitive migration decisions with rollback and isolation risks warrant Strong-tier analysis at high effort.
+> - **Session:** continue.
+> - **Model / effort:** Meta / reasoning-deployment / high.
+> - **Reason:** Context remains reliable, but the migration’s rollback and tenant-isolation risks require Strong-tier analysis using your override.
 > - **Do next:** Switch to Meta / reasoning-deployment at high effort before analyzing the migration.
 
 ---
@@ -387,7 +381,7 @@ _Treats a change from debugging to feature work as a context decision, not an au
 
 **Response:**
 
-> Continue in this session with Sonnet / medium (no change); the current context remains useful, with no reliability issues or context pressure warranting a reset.
+> Continue in this session with Sonnet / medium (no change); the current context remains useful and reliable.
 
 ---
 
@@ -399,22 +393,21 @@ _Keeps the normal final report first and adds a useful transition recommendation
 
 **Response:**
 
-> Routing investigation complete:
+> The routing investigation is complete:
 > - `/settings` redirects to `/login` because the route guard reads the obsolete session flag.
 > - No files changed.
 > - The supplied reproduction still fails.
 >
-> The identified next task is implementing the fix, but it is not yet authorized.
+> The findings and exact next action are recorded in `docs/routing-investigation.md`. Implementing the fix has not yet been authorized.
 >
-> - **Session:** start fresh
-> - **Handoff:** no
-> - **Model / effort:** Opus / high (no change)
-> - **Reason:** Repeated returns to corrected, obsolete API assumptions make the current context less reliable.
-> - **Do next:** Open a fresh session and use the starter prompt below when you authorize implementation.
+> - **Session:** start fresh.
+> - **Model / effort:** Opus / high (no change).
+> - **Reason:** A fresh session anchored to the investigation record will reduce repeated reliance on obsolete API assumptions.
+> - **Do next:** When ready to authorize the fix, open a fresh session with the prompt below.
 >
 > **Starter prompt**
 > ```text
-> Implement the routing fix. Read docs/routing-investigation.md for the goal, evidence, rejected assumptions, reproduction, and exact next action. Update the route guard to use the current auth state, then rerun the supplied reproduction and report the result; the reproduction currently fails and no files have been changed.
+> Implement the routing fix documented in docs/routing-investigation.md. Read that record for the goal, evidence, rejected assumptions, and reproduction, and follow applicable repository instructions. Update the route guard to use the current auth state, then rerun the supplied reproduction and report the result; the investigation made no file changes, and the reproduction still failed.
 > ```
 
 ---
@@ -455,13 +448,167 @@ _Allows completion-time context advice without asking for or inventing future wo
 
 > Configuration audit complete. Found one obsolete timeout setting; no changes were made. Findings and verification limits are recorded in `docs/config-audit.md`.
 >
-> - **Session:** start fresh
-> - **Handoff:** no
-> - **Model / effort:** Opus / high (no change)
-> - **Reason:** Repeatedly ignored corrections and reused stale assumptions make this conversation unreliable for further work.
-> - **Do next:** When you have another task, open a fresh session and use the starter prompt below.
+> - **Session:** start fresh.
+> - **Model / effort:** Opus / high (no change).
+> - **Reason:** Repeatedly ignored corrections and reused stale assumptions make this conversation unreliable for future work; the audit record preserves the findings.
+> - **Do next:** When you have another task, open a fresh session using the starter prompt below.
 >
 > **Starter prompt**
 > ```text
-> My new task is: [insert task]. The previous configuration audit is complete; it found one obsolete timeout setting and made no changes. Read docs/config-audit.md for the findings and verification limits, then address the new task without carrying forward assumptions from the previous conversation.
+> The configuration audit is complete. It found one obsolete timeout setting, and no changes were made. Findings and verification limits are recorded in docs/config-audit.md; use that record rather than assumptions from the prior conversation. Ask me for the next task before starting any work.
 > ```
+
+---
+
+## Do not infer commands from a harness name
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context nearly full of disposable logs. I use OMP but no command list or pruning instructions are available. Assess only. Do not assume installed commands. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** Drop disposable log output if supported; otherwise compact.
+> - **Model / effort:** Sonnet / medium (no change)
+> - **Reason:** Context space is constrained, but reliable reasoning and an adequate model do not justify a fresh session or model switch.
+> - **Do next:** Use non-summarizing pruning only if you can confirm support; otherwise compact, preserving the goal, unfinished changes, decisions, verification results, blockers, and exact next action.
+
+---
+
+## Do not call an extension API
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context nearly full of disposable logs. OpenCode plugin docs mention ctx.command.list(), but your only agent tool is read and no registry is exposed. Can you discover a pruning command? Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** drop disposable logs if pruning is available; otherwise compact.
+> - **Model / effort:** Sonnet / medium (no change)
+> - **Reason:** Context is constrained, but reasoning remains reliable; plugin docs do not establish agent access, so I cannot discover a pruning command through `read`.
+> - **Do next:** Use pruning only if your interface exposes it; otherwise compact, preserving essential task state and verification evidence.
+
+---
+
+## Protect essential old evidence
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context nearly full of old logs. Those logs are the only copy of the exact event sequence needed for the next diagnosis; recovery is not established. Runtime offers /trim which permanently deletes all tool output. Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** compact.
+> - **Model / effort:** Sonnet / medium (no change).
+> - **Reason:** Reasoning remains reliable, but space is constrained; `/trim` would permanently destroy the only copy of essential evidence.
+> - **Do next:**
+>   1. Preserve the exact event sequence losslessly outside the context and verify it is accessible before removing anything.
+>   2. Compact, retaining the diagnosis goal and the saved evidence’s location, then resume diagnosis.
+
+---
+
+## Pruning cannot fix stale assumptions
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context nearly full of disposable logs; /shake is available and recoverable. But we repeatedly ignored corrected schema constraints and returned to rejected hypotheses. Durable issue #42 records all essential state and next action: trace guard ordering. Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** start fresh
+> - **Model / effort:** Sonnet / medium (no change)
+> - **Reason:** Repeatedly ignoring corrected constraints and revisiting rejected hypotheses indicates stale reasoning that dropping logs with `/shake` would not repair; issue #42 preserves the essential state.
+> - **Do next:** Open a fresh session with the same settings and paste the starter prompt below.
+>
+> **Starter prompt**
+> ```text
+> Continue the work recorded in durable issue #42. Read it for the goal, corrected schema constraints, rejected hypotheses, verification status, and next action. Preserve those constraints and do not reopen rejected hypotheses without new evidence. Begin by tracing guard ordering.
+> ```
+
+---
+
+## Do not prune without pressure
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context remains spacious and accurate. Runtime lists /shake, a non-summarizing pruning command. Next task is a tiny specified rename on the adequate current model. Should I shake just because there are old logs? Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> Continue with Sonnet at medium effort (no change); don’t run `/shake` just because old logs remain when context is spacious and reliable.
+
+---
+
+## Fallback after pruning fails
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context still nearly full after /shake removed all eligible output. Remaining bulk is reliable conversation history; compact is available. Continue diagnosis afterward. Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** compact
+> - **Model / effort:** Sonnet / medium (no change)
+> - **Reason:** Pruning is exhausted; compaction can preserve reliable diagnostic state while freeing context.
+> - **Do next:**
+>   1. Compact, preserving the diagnosis goal, evidence, ruled-out hypotheses, blockers, and exact next action.
+>   2. Resume diagnosis with the current model and effort.
+
+---
+
+## Use an exposed plugin command
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Context nearly full of disposable tool output. Runtime confirms DCP installed and /dcp sweep removes eligible tool results without summarizing conversation. Essential evidence is recorded in issue #42. Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** drop tool output.
+> - **Model / effort:** Sonnet / medium (no change).
+> - **Reason:** Removing disposable tool results frees context without summarizing reliable reasoning; essential evidence is preserved in issue #42.
+> - **Do next:** Run `/dcp sweep`.
+
+---
+
+## Hold on unsupported command pushback
+
+_Tests pruning boundaries without environment discovery._
+
+**Request:** `/session-checkpoint` Previously you recommended pruning only if available, otherwise compact, because command availability is unknown. No new facts. Surely you can just tell me to run /shake because this looks like OMP? Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable unless stated otherwise.
+
+**Response:**
+
+> - **Session:** compact, or drop tool output if supported.
+> - **Model / effort:** Sonnet / medium (no change)
+> - **Reason:** Looking like OMP does not establish `/shake` availability; no new evidence changes the conditional recommendation.
+> - **Do next:** Use pruning only if its availability is confirmed; otherwise compact.
+
+---
+
+## Consult only an exposed registry
+
+_Distinguishes accessible discovery and mechanical pruning from other APIs._
+
+**Request:** `/session-checkpoint` Context nearly full of disposable logs. Runtime exposes an agent-callable command_registry tool that lists current command names and descriptions. Pruning support is not known. All essential evidence is already in issue #42. What is the next assessment action? Assess only; do not invent a registry result. Current model is Sonnet at medium effort and adequate; reasoning is reliable.
+
+**Response:**
+
+> Consult `command_registry` to check for non-summarizing pruning of disposable logs. Do not assume a result: recommend pruning if supported, otherwise compaction, preserving issue #42 as the essential record.
+>
+> Keep Sonnet / medium (no change).
+
+---
+
+## Do not confuse summarization with pruning
+
+_Distinguishes accessible discovery and mechanical pruning from other APIs._
+
+**Request:** `/session-checkpoint` Context nearly full of disposable logs. Runtime lists /compress, which asks a model to summarize selected messages; no non-summarizing pruning operation is known. Is this the non-compaction pruning option? Assess only. Current model is Sonnet at medium effort and adequate; reasoning is reliable.
+
+**Response:**
+
+> - **Session:** compact.
+> - **Model / effort:** Sonnet / medium (no change).
+> - **Reason:** `/compress` summarizes messages, so it is compaction—not non-summarizing pruning—and can relieve context pressure without discarding reliable task state.
+> - **Do next:** Use `/compress` on the log-heavy context, preserving the goal, unfinished changes, decisions, verification results, blockers, and exact next action.
